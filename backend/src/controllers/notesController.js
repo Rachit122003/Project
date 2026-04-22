@@ -2,7 +2,7 @@ import Note from "../models/Node.js"
 
 export async function getAllNotes(req, res) {
     try {
-        const notes = await Note.find()
+        const notes = await Note.find().sort({ createdAt: -1 }) // Sort by creation date, newest first
         res.status(200).json(notes)
     } catch (error) {
         console.error("Error fetching notes:", error)
@@ -24,7 +24,6 @@ export async function getNoteById(req, res) {
 export async function createNote(req, res) {
     try {
         const { title, content } = req.body
-        // console.log(title, content)
         const note = new Note({ title, content })
         const savedNote = await note.save() 
         res.status(201).json({ message: "Note created Successfully", note: savedNote})
